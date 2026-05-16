@@ -60,43 +60,70 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Titulo</td>
-                            <td>Conteúdo</td>
-                            <td>Categoria</td>
-                            <td><mark class="badge ativo">Ativo</mark></td>
-                            <td>
-                                <i class="fa-solid fa-pen"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>Titulo</td>
-                            <td>Conteúdo</td>
-                            <td>Categoria</td>
-                            <td><mark class="badge ativo">Ativo</mark></td>
-                            <td>
-                                <i class="fa-solid fa-pen"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </td>
-                        </tr>
-                            <td>002</td>
-                            <td>Titulo</td>
-                            <td>Conteúdo</td>
-                            <td>Categoria</td>
-                            <td><mark class="badge inativo">Inativo</mark></td>
-                            <td>
-                                <i class="fa-solid fa-pen"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
     <footer><?php include("rodape.php");?></footer>
+    <script>
+        function carregarDados(){
+            let corpoTable = document.querySelector('tbody')
+            let postagens = JSON.parse(localStorage.getItem('bancoPostagens')) || []
+            let id = 0
+            corpoTable.innerHTML = ``
+
+            postagens.forEach(function(postagem, index){
+                corpoTable.innerHTML += `
+                    </tr>
+                        <td>${id + 1}</td>
+                        <td>${postagem.postTitle}</td>
+                        <td>${postagem.postCont}</td>
+                        <td>${postagem.postCat}</td>
+                        <td><mark class="badge ${postagem.postStats}">${postagem.postStats}</mark></td>
+                        <td>
+                            <i class="fa-solid fa-pen" onclick = "editar(${index})"></i>
+                            <i class="fa-solid fa-trash-can" onclick = "deletar(${index})"></i>
+                        </td>
+                    </tr>
+                `
+
+                id += 1
+            })
+        }
+
+        function deletar(index){
+            if(confirm("Tem certeza que deseja apagar??")){
+                let postagens = JSON.parse(localStorage.getItem('bancoPostagens'))
+                postagens.splice(index, 1)
+                localStorage.setItem('bancoPostagens', JSON.stringify(postagens))
+                carregarDados()
+            }
+        }
+
+        function editar(index){
+            let novoTitle = prompt("Qual o novo título da postagem??")
+            let novoCont = prompt("Qual o novo conteúdo da postagem??")
+            let novoCat = prompt("Qual a nova categoria da postagem??")
+
+            let postagens = JSON.parse(localStorage.getItem('bancoPostagens'))
+            postagens[index].postTitle = novoTitle
+            postagens[index].postCont = novoCont
+            postagens[index].postCat = novoCat
+
+            if(prompt("Deseja mudar o status da categoria??") == 'sim'){
+                if(postagens[index].postStats == "ativo"){
+                    postagens[index].postStats = "inativo"
+                }else if(postagens[index].postStats == "inativo"){
+                    postagens[index].postStats = "ativo"
+                }
+            }
+
+            localStorage.setItem('bancoPostagens', JSON.stringify(postagens))
+            carregarDados()
+        }
+
+        carregarDados()
+    </script>
 </body>
 </html> 
