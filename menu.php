@@ -1,6 +1,6 @@
 <div id="perfil">
-    <img src="https://ui-avatars.com/api/?name=Pedro+Giacciani&background=008080&color=fff" alt="Avatar">
-    <span>Pedro Giacciani</span>
+    <img src="https://ui-avatars.com/api/?name=gabriel+Beirigo&background=008080&color=fff" alt="Avatar">
+    <span>Beirigo teste</span>
 </div>
 <hr>
 <nav id="links">
