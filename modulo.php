@@ -60,43 +60,56 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Pedro Giacciani</td>
-                            <td>giaccianipedro@gmail.com</td>
-                            <td>Administrador</td>
-                            <td><mark class="badge inativo">Inativo</mark></td>
-                            <td>
-                                <i class="fa-solid fa-pen"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>Eric Freitas</td>
-                            <td>eric@unifev.edu</td>
-                            <td>Usuário</td>
-                            <td><mark class="badge ativo">Ativo</mark></td>
-                            <td>
-                                <i class="fa-solid fa-pen"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </td>
-                        </tr>
-                            <td>002</td>
-                            <td>Eric Freitas</td>
-                            <td>eric@unifev.edu</td>
-                            <td>Usuário</td>
-                            <td><mark class="badge inativo">Inativo</mark></td>
-                            <td>
-                                <i class="fa-solid fa-pen"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
     <footer><?php include("rodape.php");?></footer>
+    <script>
+        function carregarDados(){
+            let corpoTable = document.querySelector('tbody')
+            let usuarios = JSON.parse(localStorage.getItem('bancoUsuarios')) || []
+            let id = 0
+            corpoTable.innerHTML = ``
+            usuarios.forEach(function(usuario, index){
+            corpoTable.innerHTML += `
+                </tr>
+                    <td>${id + 1}</td>
+                    <td>${usuario.userName}</td>
+                    <td>${usuario.userEmail}</td>
+                    <td>${usuario.userLvl}</td>
+                    <td><mark class="badge inativo">Inativo</mark></td>
+                    <td>
+                        <i class="fa-solid fa-pen" onclick="editar(${index})"></i>
+                        <i class="fa-solid fa-trash-can" onclick="deletar(${index})">
+                    </td>
+                </tr>    
+                `
+                id += 1
+            })
+        }
+
+        function deletar(index){
+            if(confirm("Tem certeza de que deseja deletar??")){
+                let usuarios = JSON.parse(localStorage.getItem('bancoUsuarios'))
+                usuarios.splice(index, 1)
+                localStorage.setItem('bancoUsuarios', JSON.stringify(usuarios))
+                carregarDados()
+            }
+        }
+
+        function editar(index){
+            let novoNome = prompt("Qual o novo nome do usuário??")
+            let novoEmail = prompt("Qual o novo email do usuário??")    
+            let usuarios = JSON.parse(localStorage.getItem('bancoUsuarios')) || []
+            usuarios[index].userName = novoNome
+            usuarios[index].userEmail = novoEmail
+            localStorage.setItem('bancoUsuarios', JSON.stringify(usuarios))
+            carregarDados()
+        }
+
+        carregarDados()
+    </script>
 </body>
 </html>

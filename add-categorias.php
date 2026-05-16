@@ -26,13 +26,13 @@
                     <div class="space">
                         <label for="istats">Status</label>
                         <select name="stats" id="istats">
-                            <option>Ativo</option>
-                            <option>Inativo</option>
+                            <option>ativo</option>
+                            <option>inativo</option>
                         </select>
                     </div>
 
                     <div class="space">
-                        <input type="submit" value="Salvar" class="esp-btn">
+                        <input type="submit" value="Salvar" class="esp-btn" id="btn-salvar">
                         <input type="reset" value="Limpar" class="esp-btn">
                     </div>
                 </form>
@@ -43,19 +43,25 @@
         <?php include("rodape.php"); ?>
     </footer>
     <script>
-        let categorias = prompt("Quantas categorias você quer cadastrar??")
-        let categoriasNum = Number(categorias)
-        for(let i = 1; i <= categoriasNum; i++){
-            let add = prompt(`Qual o nome da categoria ${i}?`)
-            if(add.length == 0){
-                alert("[ERRO] o nome da categoria não pode ser vazio!!")
-                i--
+        let btnSalvar = document.getElementById('btn-salvar')
+        btnSalvar.addEventListener('click', () => {
+            let nome = document.getElementById('inome').value
+            let stats = document.getElementById('istats').value
+
+            if(nome != ''){
+                const newCat = {
+                    catName: nome,
+                    catStats: stats
+                }
+
+                let categorias = JSON.parse(localStorage.getItem('bancoCategorias')) || []
+                categorias.push(newCat)
+                localStorage.setItem('bancoCategorias', JSON.stringify(categorias))
+                alert("Categoria registrada com sucesso!")
             } else{
-                console.log(add)
-                console.log("Categoria registrada com sucesso!!")
+                alert("Dados imcompletos !!")
             }
-        }
-        window.alert("Prontinho, categorias registradas!! Aperte f12 para conferir")
+        })
     </script>
 </body>
 </html>
